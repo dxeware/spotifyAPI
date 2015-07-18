@@ -2,22 +2,22 @@ $(function(){
 
   var artistID;
 
-  $('#search-term').submit(function(event) {
+  $('#search-form').submit(function(event) {
     event.preventDefault();
-    var searchTerm = $('#query').val();
-    artistID = getArtistID(searchTerm);
+    var artistName = $('#query').val();
+    artistID = getArtistID(artistName);
   });
 
 });
 
-function getArtistID(searchTerm){
+function getArtistID(artistName){
 
   var id;
 
   var result = $.ajax({
     url: "https://api.spotify.com/v1/search",
     data: {
-            q: searchTerm,
+            q: artistName,
             type: 'artist'
         },
   })
@@ -27,6 +27,8 @@ function getArtistID(searchTerm){
     id = result.artists.items[0].id;
     console.log("artistID = " + id);
     getTopTracks(id);
+    $('#query').val('');
+
   })
   .fail(function(jqXHR, error, errorThrown){
     console.log("FAIL");
@@ -56,6 +58,7 @@ function getTopTracks(artistID) {
     });
     //var artistID = result.artists.items[0].id;
     console.log("top track = " + popularTrack.name);
+    $('#results').append('<a href="' + popularTrack.preview_url + '"><img src="' + popularTrack.album.images[1].url + '">');
   })
   .fail(function(jqXHR, error, errorThrown){
     console.log("FAIL");

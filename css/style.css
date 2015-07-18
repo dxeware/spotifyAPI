@@ -1,0 +1,9 @@
+#search-results {
+  display: inline-block;
+}
+
+img {
+  padding: 6px;
+  width: 25em;
+  height: 20em;
+}

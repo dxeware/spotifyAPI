@@ -14,14 +14,14 @@ $(function(){
   }
 
   // Method to retrieve most popular track
-  Artist.prototype.getMostPopularTrack = function (artist) {
+  Artist.prototype.getMostPopularTrack = function () {
 
-    debug("artistName = " + artist.name);
+    debug("artistName = " + this.name);
 
     var result = $.ajax({
       url: "https://api.spotify.com/v1/search",
       data: {
-              q: artist.name,
+              q: this.name,
               type: 'artist'
           },
     })
@@ -34,10 +34,10 @@ $(function(){
         alert("Enter a valid artist name!");
 
       } else {
-        artist.id = result.artists.items[0].id;
-        debug("artistName = " + artist.name);
-        debug("artistID = " + artist.id);
-        getTopTracks(artist);
+        this.id = result.artists.items[0].id;
+        debug("artistName = " + this.name);
+        debug("artistID = " + this.id);
+        getTopTracks(this);
       }
 
       // Clear artist name entry

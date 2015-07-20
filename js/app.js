@@ -14,14 +14,15 @@ $(function(){
   }
 
   // Method to retrieve most popular track
-  Artist.prototype.getMostPopularTrack = function (artist) {
+  Artist.prototype.getMostPopularTrack = function () {
 
-    debug("artistName = " + artist.name);
+    var self = this;
+    debug("artistName = " + self.name);
 
     var result = $.ajax({
       url: "https://api.spotify.com/v1/search",
       data: {
-              q: artist.name,
+              q: self.name,
               type: 'artist'
           },
     })
@@ -34,10 +35,10 @@ $(function(){
         alert("Enter a valid artist name!");
 
       } else {
-        artist.id = result.artists.items[0].id;
-        debug("artistName = " + artist.name);
-        debug("artistID = " + artist.id);
-        getTopTracks(artist);
+        self.id = result.artists.items[0].id;
+        debug("artistName = " + self.name);
+        debug("artistID = " + self.id);
+        getTopTracks(self);
       }
 
       // Clear artist name entry
@@ -85,6 +86,8 @@ $(function(){
         debug("top track = " + popularTrack.name);
 
         // Display the most popular track in DOM
+        $('#results').append('<p><span>Artist:</span> ' + artist.name + '</p>');
+        $('#results').append('<p><span>Most Popular Song:</span> ' + popularTrack.name + '</p>');
         $('#results').append('<a href="' + popularTrack.preview_url + '"><img src="' + popularTrack.album.images[1].url + '">');
       }
     })
@@ -97,12 +100,16 @@ $(function(){
   // and display most popular track in DOM
   $('#search-form').submit(function(event) {
     event.preventDefault();
+    $('#results').empty();
     var artistName = $('#query').val();
+
+    // Convert to artist name to upper case
+    artistName = artistName.replace(/^(.)|\s(.)/g, function($1){ return $1.toUpperCase( ); });
 
     var artist = new Artist(artistName);
     debug("Artist name = " + artist.name);
 
-    artist.getMostPopularTrack(artist);
+    artist.getMostPopularTrack();
   });
 
 });

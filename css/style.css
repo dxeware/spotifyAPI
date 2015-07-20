@@ -15,6 +15,7 @@ p {
   height: 2em;
   width: 24em;
 }
+
 .search {
   color: white;
   height: 3em;
@@ -31,3 +32,10 @@ img {
   height: 20em;
 }
 
+#results p {
+  margin: 0 auto 0 auto;
+}
+
+#results p span {
+  text-decoration: underline;
+}

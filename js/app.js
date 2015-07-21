@@ -38,7 +38,7 @@ $(function(){
         self.id = result.artists.items[0].id;
         debug("artistName = " + self.name);
         debug("artistID = " + self.id);
-        getTopTracks(self);
+        self.getTopTracks();
       }
 
       // Clear artist name entry
@@ -52,16 +52,17 @@ $(function(){
   };
 
   // Get the top tracks and display most popular
-  function getTopTracks(artist) {
+  Artist.prototype.getTopTracks = function() {
 
     var popularity = 0;
     var popularTrack;
+    var self = this;
 
-    debug("Artist = " + artist.name);
-    debug("Artist id = " + artist.id);
+    debug("Artist = " + self.name);
+    debug("Artist id = " + self.id);
 
     var result = $.ajax({
-      url: "https://api.spotify.com/v1/artists/" + artist.id + "/top-tracks",
+      url: "https://api.spotify.com/v1/artists/" + self.id + "/top-tracks",
       data: {
               country: 'US'
           },
@@ -72,7 +73,7 @@ $(function(){
 
       // Check is tracks found
       if (result.tracks.length === 0) {
-        alert("Cannot find any tracks for " + artist.name +"!");
+        alert("Cannot find any tracks for " + self.name +"!");
       } else {
 
         // Search for most popular track
@@ -86,7 +87,7 @@ $(function(){
         debug("top track = " + popularTrack.name);
 
         // Display the most popular track in DOM
-        $('#results').append('<p><span>Artist:</span> ' + artist.name + '</p>');
+        $('#results').append('<p><span>Artist:</span> ' + self.name + '</p>');
         $('#results').append('<p><span>Most Popular Song:</span> ' + popularTrack.name + '</p>');
         $('#results').append('<a href="' + popularTrack.preview_url + '"><img src="' + popularTrack.album.images[1].url + '">');
       }
@@ -94,7 +95,7 @@ $(function(){
     .fail(function(jqXHR, error, errorThrown){
       debug("FAIL");
     });
-  }
+  };
 
   // Retrieve artist name, create new artist
   // and display most popular track in DOM
